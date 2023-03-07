@@ -31,13 +31,22 @@ namespace RAA_WPF_03_Skills
         private ObservableCollection<FamilySymbol> titleblockCollection { get; set; }
         private ObservableCollection<View> allViewsCollection { get; set; }
 
+        private ObservableCollection<SheetNumberNameData> sheetData =
+            new ObservableCollection<SheetNumberNameData>();
+        private ObservableCollection<string> sheetNumItems;
+        private ObservableCollection<string> sheetNameItems;
 
-        public MyForm(List<FamilySymbol> titleblockList,List<View> viewsList)
+        public MyForm(List<FamilySymbol> titleblockList,List<View> viewsList, Document doc)
         {
             InitializeComponent();
 
-            titleblockCollection = new ObservableCollection<FamilySymbol>(titleblockList);
-            allViewsCollection = new ObservableCollection<View>(viewsList);
+            
+            dataGrid.ItemsSource = allViewsCollection;
+            titleBlockItem.ItemsSource = titleblockCollection;
+            viewItem.ItemsSource = viewsList;
+            
+
+            SheetNumberNameData.doc = doc;
 
         }
 
@@ -56,18 +65,32 @@ namespace RAA_WPF_03_Skills
 
         private void btnRemove_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            //try
+            //{
+            //    foreach (FamilySymbol curRow in titleblockCollection)
+            //    {
+            //        if (dataGrid.SelectedItem == curRow)
+            //            titleblockCollection.Remove(curRow);
+            //    }
+            //}
+            //catch (Exception)
+            //{ }
+            //this.Close();
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            //SheetNumberNameData newData = new SheetNumberNameData(sheetNumItems,sheetNameItems);
+            //sheetData.Add(newData);
+            //dataGrid.Items.Refresh();
+            //ObservableCollection<string> titleblockCollection = new ObservableCollection<string>();
+            //this.Close();
         }
 
         private void btnLoad_Click(object sender, RoutedEventArgs e)
         {
-            //var fileName = OpenFile();
-            this.Close();
+            var fileName = OpenFile();
+            //this.Close();
         }
         private static string OpenFile()
         {
@@ -105,20 +128,21 @@ namespace RAA_WPF_03_Skills
             return sheets;
         }
     }
-    
-    
+
+
     public class SheetNumberNameData
     {
-        private static Document doc;
+        public static Document doc;
 
         public string SheetNumber { get; set; }
-        
-        public string SheetName { get;set; }
+
+        public string SheetName { get; set; }
 
         public bool IsPlaceholder { get; set; }
 
-        public string TitleblockType { get => TitleblockType;
-            set => GetAllTitleblocks(doc);
+        public List<string> TitleblockType
+        {
+            get => GetAllTitleblocks(doc);
         }
 
         public string ViewToPlace { get; set; }
@@ -128,7 +152,7 @@ namespace RAA_WPF_03_Skills
             SheetNumber = sheetNumItems.ToString();
             SheetName = sheetNameItems.ToString();
         }
-        
+
         public static List<string> GetAllTitleblocks(Document doc)
         {
             List<string> returnList = new List<string>();

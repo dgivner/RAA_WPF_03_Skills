@@ -17,7 +17,14 @@
             <Label Grid.Row="1" Content="Enter Sheet Information Below:"/>
 
 
-        <DataGrid x:Name="dataGrid" Grid.Row="2" GridLinesVisibility="All" AlternatingRowBackground="Aquamarine" CanUserAddRows="True" SelectionMode="Single" AutoGenerateColumns="False" EnableColumnVirtualization="False" EnableRowVirtualization="False">
+        <DataGrid x:Name="dataGrid" Grid.Row="2" 
+                  GridLinesVisibility="All" 
+                  AlternatingRowBackground="Aquamarine" 
+                  CanUserAddRows="True" 
+                  SelectionMode="Extended" 
+                  AutoGenerateColumns="False" 
+                  EnableColumnVirtualization="False" 
+                  EnableRowVirtualization="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Sheet #" Width="100" IsReadOnly="False" Binding="{Binding Number }"/>
                 <DataGridTextColumn Header="Sheet Name" Width="300" IsReadOnly="False" Binding="{Binding Name}"/>

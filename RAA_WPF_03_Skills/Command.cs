@@ -68,7 +68,7 @@ namespace RAA_WPF_03_Skills
             // put any code needed for the form here
 
             // open form
-            MyForm currentForm = new MyForm(titleblockList,viewsList)
+            MyForm currentForm = new MyForm(titleblockList,viewsList,doc)
             {
                 Width = 800,
                 Height = 450,
