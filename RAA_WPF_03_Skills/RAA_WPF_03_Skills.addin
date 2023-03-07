@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RevitAddIns>
+  <AddIn Type="Command">
+    <Text>Command RAA_WPF_03_Skills</Text>
+    <Description>Some description for RAA_WPF_03_Skills</Description>
+    <Assembly>RAA_WPF_03_Skills.dll</Assembly>
+    <FullClassName>RAA_WPF_03_Skills.Command</FullClassName>
+    <ClientId>ed051056-55d6-4d4d-a686-4a66827c9049</ClientId>
+    <VendorId>com.YOUR COMPANY NAME</VendorId>
+    <VendorDescription>YOUR COMPANY NAME, YOUR COMPANY URL</VendorDescription>
+  </AddIn>
+  <AddIn Type="Application">
+    <Name>Application RAA_WPF_03_Skills</Name>
+    <Assembly>RAA_WPF_03_Skills.dll</Assembly>
+    <FullClassName>RAA_WPF_03_Skills.App</FullClassName>
+    <ClientId>c2fa71d1-be8a-466d-ab5f-88d4c56c5476</ClientId>
+    <VendorId>com.YOUR COMPANY NAME</VendorId>
+    <VendorDescription>YOUR COMPANY NAME, YOUR COMPANY URL</VendorDescription>
+  </AddIn>
+</RevitAddIns>
