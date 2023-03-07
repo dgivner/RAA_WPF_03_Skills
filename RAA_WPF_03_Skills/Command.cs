@@ -23,8 +23,9 @@ namespace RAA_WPF_03_Skills
     [Transaction(TransactionMode.Manual)]
     public class Command : IExternalCommand
     {
-        private Sheets sheets;
-        private List<SheetNumberNameData> sheetNumberNameData;
+        private List<FamilySymbol> titleblockList;
+        private List<View> viewsList;
+
         public Result Execute(
             ExternalCommandData commandData,
             ref string message,
@@ -67,7 +68,7 @@ namespace RAA_WPF_03_Skills
             // put any code needed for the form here
 
             // open form
-            MyForm currentForm = new MyForm(sheets,sheetNumberNameData)
+            MyForm currentForm = new MyForm(titleblockList,viewsList)
             {
                 Width = 800,
                 Height = 450,
@@ -78,40 +79,7 @@ namespace RAA_WPF_03_Skills
             currentForm.ShowDialog();
 
             // get form data and do something
-            using (Transaction tx = new Transaction(doc))
-            {
-                tx.Start("Project Setup");
-                //foreach (var level in GetLevels(doc))
-                //{
-                    
-                //    ViewPlan newPlanVIew = ViewPlan.Create(doc, planVFT.Id, level.Id);
-                //    ViewPlan newCeilingPlan = ViewPlan.Create(doc, rcpVFT.Id, level.Id);
-                    
-                //    ViewSheet newSheet = ViewSheet.Create(doc, tblockId);
-                //    newSheet.Name = "";
-                //    newSheet.SheetNumber = "";
-                //    ViewSheet newCeilingSheet = ViewSheet.Create(doc, tblockId);
-                //    newCeilingSheet.Name = "";
-                //    newCeilingSheet.SheetNumber = "";
-
-                //    XYZ insertPoint = new XYZ(2, 1, 0);
-                //    XYZ secondInsertPoint = new XYZ(0, 1, 0);
-
-                //    Viewport newViewport = Viewport.Create(doc, newSheet.Id, newPlanVIew.Id, insertPoint);
-                //    Viewport newCeilingViewport =
-                //        Viewport.Create(doc, newCeilingSheet.Id, newCeilingPlan.Id, secondInsertPoint);
-                //}
-
-                //foreach (var sheet in SheetList())
-                //{
-                //    ViewSheet newSheet = ViewSheet.Create(doc, tblockId);
-                //    newSheet.Name = sheet.Name;
-                //    newSheet.SheetNumber = sheet.Number;
-                //}
-
-                tx.Commit();
-                tx.Dispose();
-            }
+            
 
             return Result.Succeeded;
         }
@@ -202,31 +170,6 @@ namespace RAA_WPF_03_Skills
             return null;
         }
 
-        //struct ViewStruct
-        //{
-        //    public string ViewName;
-        //    public string ViewDiscipline;
-        //    public string Level;
-
-        //    public ViewStruct(string viewName, string viewDiscipline, string level)
-        //    {
-        //        ViewName = viewName;
-        //        ViewDiscipline = viewDiscipline;
-        //        Level = level;
-        //    }
-        //}
-        //struct SheetStruct
-        //{
-        //    public string SheetName;
-        //    public string SheetNumber;
-            
-
-        //    public SheetStruct(string sheetName, string sheetNumber)
-        //    {
-        //        SheetName = sheetName;
-        //        SheetNumber = sheetNumber;
-        //    }
-        //}
         public static String GetMethod()
         {
             var method = MethodBase.GetCurrentMethod().DeclaringType?.FullName;

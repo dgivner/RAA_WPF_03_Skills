@@ -28,52 +28,19 @@ namespace RAA_WPF_03_Skills
     /// </summary>
     public partial class MyForm : System.Windows.Window
     {
-        private static Microsoft.Office.Interop.Excel.Application excel = new Microsoft.Office.Interop.Excel.Application();
-        private static  Microsoft.Office.Interop.Excel.Workbook workbook = excel.Workbooks.Open("FilePath");
-        private static Microsoft.Office.Interop.Excel.Worksheet worksheet = workbook.Sheets[1];
-        private SheetNumberNameData sheetData;
-        private Sheets sheets;
-        private List<SheetNumberNameData> sheetNumberNameData;
+        private ObservableCollection<FamilySymbol> titleblockCollection { get; set; }
+        private ObservableCollection<View> allViewsCollection { get; set; }
 
-        ObservableCollection<SheetNumberNameData> dataList { get; set; }
-        ObservableCollection<string> sheetNumItems { get; set; } 
-        ObservableCollection<string> sheetNameItems { get; set; }
 
-        
-        public MyForm(Sheets sheets, SheetNumberNameData sheetNumberNameData)
+        public MyForm(List<FamilySymbol> titleblockList,List<View> viewsList)
         {
             InitializeComponent();
 
-            List<dSheets> dSheetsList = new List<dSheets>();
-            List<SheetNumberNameData> sheetDataList = new List<SheetNumberNameData>();
-            foreach (dSheets sheet in dSheetsList)
-            {
-                SheetNumberNameData sheetData = new SheetNumberNameData(sheetNumItems,sheetNameItems)
-                {
-                    SheetNumber = sheet.Number,
-                    SheetName = sheet.Name
-                };
-            }
-            sheetDataList.Add(sheetData);
-            
-            dataList = new ObservableCollection<SheetNumberNameData>();
-            dataList.Add(new SheetNumberNameData(sheetNumItems,sheetNameItems));
-
-            sheetNumItems = new ObservableCollection<string>();
-            sheetNameItems = new ObservableCollection<string>();
-
-            dataGrid.ItemsSource = SheetList();
-
-            //titleBlockItem.ItemsSource = ;
-            //viewItem.ItemsSource = ;
+            titleblockCollection = new ObservableCollection<FamilySymbol>(titleblockList);
+            allViewsCollection = new ObservableCollection<View>(viewsList);
 
         }
 
-        public MyForm(Sheets sheets, List<SheetNumberNameData> sheetNumberNameData)
-        {
-            this.sheets = sheets;
-            this.sheetNumberNameData = sheetNumberNameData;
-        }
 
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
@@ -89,23 +56,12 @@ namespace RAA_WPF_03_Skills
 
         private void btnRemove_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                foreach (SheetNumberNameData curRow in dataList)
-                {
-                    if (dataGrid.SelectedItem == curRow)
-                        dataList.Remove(curRow);
-                }
-            }
-            catch (Exception)
-            { }
-            //this.Close();
+            this.Close();
         }
 
         private void btnAdd_Click(object sender, RoutedEventArgs e)
         {
-            dataList.Add(new SheetNumberNameData(sheetNumItems,sheetNameItems));
-            //this.Close();
+            this.Close();
         }
 
         private void btnLoad_Click(object sender, RoutedEventArgs e)
@@ -153,13 +109,17 @@ namespace RAA_WPF_03_Skills
     
     public class SheetNumberNameData
     {
+        private static Document doc;
+
         public string SheetNumber { get; set; }
         
         public string SheetName { get;set; }
 
         public bool IsPlaceholder { get; set; }
 
-        public string TitleblockType { get; set; }
+        public string TitleblockType { get => TitleblockType;
+            set => GetAllTitleblocks(doc);
+        }
 
         public string ViewToPlace { get; set; }
 
@@ -167,6 +127,22 @@ namespace RAA_WPF_03_Skills
         {
             SheetNumber = sheetNumItems.ToString();
             SheetName = sheetNameItems.ToString();
+        }
+        
+        public static List<string> GetAllTitleblocks(Document doc)
+        {
+            List<string> returnList = new List<string>();
+
+            FilteredElementCollector collector = new FilteredElementCollector(doc);
+            collector.WhereElementIsElementType();
+            collector.OfCategory(BuiltInCategory.OST_TitleBlocks);
+
+            foreach (FamilySymbol curTB in collector)
+            {
+                returnList.Add(curTB.Name);
+            }
+
+            return returnList;
         }
     }
 }
