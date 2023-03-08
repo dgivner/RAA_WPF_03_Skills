@@ -23,7 +23,7 @@ namespace RAA_WPF_03_Skills
     [Transaction(TransactionMode.Manual)]
     public class Command : IExternalCommand
     {
-        private List<FamilySymbol> titleblockList;
+        private List<string> titleblockList;
         private List<View> viewsList;
 
         public Result Execute(
@@ -40,12 +40,13 @@ namespace RAA_WPF_03_Skills
             ElementId tblockId = tblockCollector.FirstElementId();
 
             
-            List<SheetNumberNameData> sheetNumberNameData = new List<SheetNumberNameData>();
-            
-            //this is where the struct were at
 
-            FilteredElementCollector viewTemplateCollector = new FilteredElementCollector(doc);
-            viewTemplateCollector.OfClass(typeof(ViewFamilyType));
+            //List<SheetNumberNameData> sheetNumberNameData = new List<SheetNumberNameData>();
+
+            
+
+            //FilteredElementCollector viewTemplateCollector = new FilteredElementCollector(doc);
+            //viewTemplateCollector.OfClass(typeof(ViewFamilyType));
 
             FilteredElementCollector vftCollector = new FilteredElementCollector(doc);
             vftCollector.OfClass(typeof(ViewFamilyType));
@@ -64,11 +65,8 @@ namespace RAA_WPF_03_Skills
                 if (vft.ViewFamily == ViewFamily.AreaPlan) areaVFT = vft;
             }
 
-
-            // put any code needed for the form here
-
             // open form
-            MyForm currentForm = new MyForm(titleblockList,viewsList,doc)
+            MyForm currentForm = new MyForm(doc, viewsList, titleblockList)
             {
                 Width = 800,
                 Height = 450,
@@ -78,14 +76,13 @@ namespace RAA_WPF_03_Skills
 
             currentForm.ShowDialog();
 
-            // get form data and do something
-            
-
             return Result.Succeeded;
         }
+        // put any code needed for the form here
+        
+
 
         
-        //Read Sheets excel file for data
 
         //Get Levels in Revit model
         private List<Level> GetLevels(Document doc)
@@ -96,22 +93,6 @@ namespace RAA_WPF_03_Skills
 
             return (List<Level>) levels;
         }
-
-        public static List<View> GetAllViewTemplates(Document curDoc)
-        {
-            List<View> returnList = new List<View>();
-            List<View> viewList = GetAllViews(curDoc);
-            foreach (View v in viewList)
-            {
-                if (v.IsTemplate == true)
-                {
-                    returnList.Add(v);
-                }
-            }
-
-            return returnList;
-        }
-
         public static List<View> GetAllViews(Document curDoc)
         {
             FilteredElementCollector allViews = new FilteredElementCollector(curDoc);
@@ -140,40 +121,11 @@ namespace RAA_WPF_03_Skills
 
             return null;
         }
-        internal Element GetTitleBlockByName(Document doc, string typeName)
-        {
-            FilteredElementCollector collector = new FilteredElementCollector(doc);
-            collector.OfCategory(BuiltInCategory.OST_TitleBlocks);
-            foreach (Element currentTblock in collector)
-            {
-                if (currentTblock.Name == typeName)
-                {
-                    return currentTblock;
-                }
-            }
-
-            return null;
-        }
-        private View GetViewByName(Document doc, string name)
-        {
-            FilteredElementCollector collector = new FilteredElementCollector(doc);
-            collector.OfCategory(BuiltInCategory.OST_Views);
-
-            foreach (View currentView in collector)
-            {
-                if (currentView.Name == name)
-                {
-                    return currentView;
-                }
-            }
-
-            return null;
-        }
-
         public static String GetMethod()
         {
             var method = MethodBase.GetCurrentMethod().DeclaringType?.FullName;
             return method;
         }
+      
     }
 }
